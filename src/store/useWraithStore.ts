@@ -1,9 +1,11 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { api } from '../services/api';
 
 export type WorkspaceId = 'origin' | 'signal' | 'psyche' | 'cortex' | 'radar' | 'thematics' | 'laboratory' | 'dread' | 'continuity' | 'archive' | 'revelation' | 'thematic' | 'structural';
 
 interface ProjectState {
+  id: string; // Add id for persistence
   wound: string;
   pressures: string[];
   collapseQuestion: {
@@ -39,13 +41,15 @@ interface WraithStore {
   setActiveWorkspace: (id: WorkspaceId) => void;
   updateProject: (data: Partial<ProjectState>) => void;
   completeOrigin: () => void;
+  loadProject: (id: string) => Promise<void>;
 }
 
 export const useWraithStore = create<WraithStore>()(
   persist(
-    (set) => ({
+    (set, getStore) => ({
       activeWorkspace: 'origin',
       project: {
+        id: 'main-story', // Default ID
         wound: '',
         pressures: [],
         collapseQuestion: { 
@@ -75,13 +79,31 @@ export const useWraithStore = create<WraithStore>()(
       },
       
       setActiveWorkspace: (id) => set({ activeWorkspace: id }),
-      updateProject: (data) => set((state) => ({ 
-        project: { ...state.project, ...data } 
-      })),
-      completeOrigin: () => set((state) => ({ 
-        project: { ...state.project, isOriginComplete: true },
-        activeWorkspace: 'signal'
-      })),
+      
+      updateProject: async (data) => {
+        set((state) => ({ 
+          project: { ...state.project, ...data } 
+        }));
+        // Sync to DB
+        const fullProject = getStore().project;
+        await api.saveProject(fullProject);
+      },
+
+      completeOrigin: async () => {
+        set((state) => ({ 
+          project: { ...state.project, isOriginComplete: true },
+          activeWorkspace: 'signal'
+        }));
+        const fullProject = getStore().project;
+        await api.saveProject(fullProject);
+      },
+
+      loadProject: async (id) => {
+        const remote = await api.getProject(id);
+        if (remote) {
+          set({ project: remote });
+        }
+      }
     }),
     {
       name: 'wraith-storage',

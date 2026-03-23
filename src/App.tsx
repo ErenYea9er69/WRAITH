@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { LeftRail } from './components/LeftRail';
 import { Peripheral } from './components/Peripheral';
 import { DraftSpine } from './components/DraftSpine';
@@ -13,7 +14,11 @@ import { DreadArchitecture } from './workspaces/DreadArchitecture/DreadArchitect
 import { ContinuityArchitecture } from './workspaces/ContinuityArchitecture/ContinuityArchitecture';
 
 function App() {
-  const { activeWorkspace, project } = useWraithStore();
+  const { activeWorkspace, project, loadProject } = useWraithStore();
+
+  useEffect(() => {
+    loadProject('main-story');
+  }, [loadProject]);
 
   const renderWorkspace = () => {
     // Force Origin Chamber if not complete
