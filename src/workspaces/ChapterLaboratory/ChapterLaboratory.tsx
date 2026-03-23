@@ -16,7 +16,7 @@ export const ChapterLaboratory = () => {
   ];
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0b] p-8 overflow-y-auto">
+    <div className="flex flex-col bg-[#0a0a0b] p-8 min-h-full">
       {/* Workspace Header */}
       <header className="mb-8 flex justify-between items-start border border-zinc-900 bg-zinc-900/10 p-8 rounded-sm">
         <div className="flex items-center gap-4">

@@ -41,7 +41,7 @@ export const OriginChamber = () => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0b] p-12 max-w-5xl mx-auto overflow-y-auto">
+    <div className="flex flex-col bg-[#0a0a0b] p-12 max-w-5xl mx-auto min-h-full">
       {/* Header */}
       <div className="mb-12 shrink-0">
         <h1 className="text-4xl font-bold tracking-tight mb-4 flex items-center gap-4">
@@ -70,7 +70,7 @@ export const OriginChamber = () => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -20 }}
             transition={{ duration: 0.2 }}
-            className="h-full"
+            className="min-h-full"
           >
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-bone mb-1 uppercase">{steps[step].title}</h2>

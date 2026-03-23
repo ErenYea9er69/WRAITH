@@ -6,7 +6,7 @@ export const SentenceRadar = () => {
   const { project } = useWraithStore();
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0b] p-8 overflow-y-auto font-mono">
+    <div className="flex flex-col bg-[#0a0a0b] p-8 min-h-full font-mono">
       {/* Search/Input Panel */}
       <header className="mb-12 border border-zinc-900 bg-zinc-900/10 p-8 rounded-sm">
         <div className="flex items-center gap-4 mb-8">

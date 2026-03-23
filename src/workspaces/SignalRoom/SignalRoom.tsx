@@ -14,7 +14,7 @@ export const SignalRoom = () => {
   const polylinePoints = beliefPoints.map(p => `${p.x},${p.y}`).join(' ');
 
   return (
-    <div className="flex flex-col h-full bg-[#0a0a0b] p-8 overflow-y-auto">
+    <div className="flex flex-col bg-[#0a0a0b] p-8 min-h-full">
       <header className="mb-12 flex justify-between items-end border-b border-zinc-900 pb-6 shrink-0">
         <div>
           <h1 className="text-3xl font-bold tracking-tighter text-bone uppercase">Signal Room</h1>
