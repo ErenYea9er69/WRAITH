@@ -1,5 +1,6 @@
 import { useWraithStore } from '../../store/useWraithStore';
 import { User, Shield, Zap, Info } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export const PsycheEngine = () => {
   const { project } = useWraithStore();
@@ -78,13 +79,80 @@ export const PsycheEngine = () => {
         </div>
       </header>
 
-      {/* Living State Feed (Phase 3) */}
-      <section className="opacity-20 pointer-events-none grayscale blur-[1px]">
-         <div className="text-[10px] text-zinc-700 uppercase tracking-widest font-bold mb-4">
-          Living State // Mask Load Readings [LOCKED]
+      {/* Living State Feed */}
+      <section className="mt-8 border-t border-zinc-900 pt-12">
+        <div className="flex justify-between items-center mb-8">
+          <div className="text-[10px] text-zinc-500 uppercase tracking-[0.2em] font-bold">
+            Living State // Mask Load Readings
+          </div>
+          <div className="flex gap-4 items-center">
+            <div className="text-[9px] text-zinc-600 uppercase">System Frequency: <span className="text-bone">4.2Hz</span></div>
+            <div className="px-2 py-0.5 bg-crimson/10 border border-crimson/20 text-[8px] text-crimson font-bold uppercase tracking-tighter">Live Monitor</div>
+          </div>
         </div>
-        <div className="h-64 bg-zinc-900/5 border border-zinc-900 border-dashed rounded flex items-center justify-center">
-           <span className="text-xs text-zinc-800 uppercase font-bold tracking-[0.5em]">Phase 3 // Living State Engine</span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-96">
+          {/* Mask Load Gauge */}
+          <div className="lg:col-span-2 bg-zinc-900/10 border border-zinc-900 rounded p-8 flex flex-col relative overflow-hidden group">
+            <div className="flex justify-between mb-8">
+              <div className="space-y-1">
+                <h4 className="text-[11px] text-zinc-400 font-bold uppercase">Aggregated Mask Load</h4>
+                <p className="text-[9px] text-zinc-600 italic">Discrepancy between exterior manifestation and interior truth.</p>
+              </div>
+              <div className="text-3xl font-bold text-crimson font-mono">
+                72<span className="text-xs text-zinc-700 ml-1">%</span>
+              </div>
+            </div>
+
+            <div className="flex-1 flex items-end gap-1">
+              {[...Array(40)].map((_, i) => {
+                const height = Math.random() * 80 + 20;
+                const isActive = i < 28; // ~70%
+                return (
+                  <motion.div 
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={{ height: `${height}%` }}
+                    transition={{ duration: 1, delay: i * 0.02 }}
+                    className={`flex-1 ${isActive ? 'bg-crimson/40 hover:bg-crimson' : 'bg-zinc-900'} transition-colors duration-300 cursor-help`}
+                  />
+                );
+              })}
+            </div>
+            
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+              <div className="bg-[#0a0a0b] border border-crimson p-3 shadow-2xl">
+                <span className="text-[10px] text-crimson font-bold uppercase block mb-1">Drift Alert</span>
+                <p className="text-[9px] text-zinc-500 leading-tight">Protagonist is maintaining a 'Complicit Witness' mask despite 'Bureaucratic Harm' pressure.</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Signature Deployment Feed */}
+          <div className="bg-zinc-900/10 border border-zinc-900 rounded p-6 flex flex-col">
+            <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-6">Signature Log</div>
+            <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-zinc-800">
+              {[
+                { time: '14:22', sig: 'Evasive Redirect', status: 'Active', color: 'crimson' },
+                { time: '12:05', sig: 'Bureaucratic Deference', status: 'Logged', color: 'zinc-700' },
+                { time: '09:40', sig: 'Somatic Suppression', status: 'Logged', color: 'zinc-700' },
+                { time: '04:15', sig: 'Mimetic Compliance', status: 'Logged', color: 'zinc-700' },
+              ].map((log, i) => (
+                <div key={i} className="flex gap-4 items-start text-[10px] border-b border-zinc-900 pb-3 last:border-0">
+                  <span className="text-zinc-700 font-mono tracking-tighter">{log.time}</span>
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <span className="text-zinc-400 font-bold uppercase tracking-tight">{log.sig}</span>
+                      <span className={`text-${log.color} text-[8px] font-bold uppercase`}>{log.status}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button className="mt-6 w-full py-2 bg-zinc-900 border border-zinc-800 text-[9px] text-zinc-500 uppercase tracking-widest font-bold hover:bg-zinc-800 hover:text-bone transition-all">
+              Initialize New Signature
+            </button>
+          </div>
         </div>
       </section>
     </div>

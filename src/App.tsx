@@ -5,6 +5,8 @@ import { useWraithStore } from './store/useWraithStore';
 import { OriginChamber } from './workspaces/OriginChamber/OriginChamber';
 import { SignalRoom } from './workspaces/SignalRoom/SignalRoom';
 import { PsycheEngine } from './workspaces/PsycheEngine/PsycheEngine';
+import { StructuralCortex } from './workspaces/StructuralCortex/StructuralCortex';
+import { SentenceRadar } from './workspaces/SentenceRadar/SentenceRadar';
 
 function App() {
   const { activeWorkspace, project } = useWraithStore();
@@ -19,6 +21,8 @@ function App() {
       case 'origin': return <OriginChamber />;
       case 'signal': return <SignalRoom />;
       case 'psyche': return <PsycheEngine />;
+      case 'cortex': return <StructuralCortex />;
+      case 'radar': return <SentenceRadar />;
       // Placeholders for others
       default: return (
         <div className="flex items-center justify-center h-full text-zinc-700 uppercase tracking-widest text-sm">
