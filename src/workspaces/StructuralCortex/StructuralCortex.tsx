@@ -4,6 +4,7 @@ import { Layers, Share2, Info } from 'lucide-react';
 
 export const StructuralCortex = () => {
   const { project } = useWraithStore();
+  const hasWound = project.wound.trim().length > 0;
 
   const revelationPoints = [
     { x: 0, y: 95 }, { x: 100, y: 90 }, { x: 200, y: 85 }, 
@@ -24,7 +25,7 @@ export const StructuralCortex = () => {
           <div>
             <h1 className="text-2xl font-bold tracking-tighter text-bone uppercase">Structural Cortex</h1>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">
-              Workspace Two // Genesis Protocol // Narrative Object // {project.wound.slice(0, 30)}...
+              Workspace Two // Genesis Protocol // Narrative Object // {hasWound ? project.wound.slice(0, 30) : 'System Standby'}...
             </p>
           </div>
         </div>
@@ -32,76 +33,86 @@ export const StructuralCortex = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="space-y-2">
             <span className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Temporal Architecture</span>
-            <div className="text-xs text-bone font-mono">NON-LINEAR // ANAMORPHIC</div>
+            <div className="text-xs text-bone font-mono">{hasWound ? 'NON-LINEAR // ANAMORPHIC' : 'IDLE'}</div>
           </div>
           <div className="space-y-2">
             <span className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Revelation Density</span>
-            <div className="text-xs text-bone font-mono">CRITICAL // 8.4 bits/chapter</div>
+            <div className={`text-xs font-mono ${hasWound ? 'text-bone' : 'text-zinc-800'}`}>{hasWound ? 'CRITICAL // 8.4 bits/chapter' : '0.0 bits/chapter'}</div>
           </div>
           <div className="space-y-2">
             <span className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Structural Health</span>
-            <div className="text-xs text-crimson font-bold font-mono uppercase">Fragile // Loop Detected</div>
+            <div className={`text-xs font-bold font-mono uppercase ${hasWound ? 'text-crimson' : 'text-zinc-800'}`}>
+              {hasWound ? 'Fragile // Loop Detected' : 'Diagnostic Standby'}
+            </div>
           </div>
         </div>
       </header>
 
       {/* Revelation Curve SVG */}
-      <section className="bg-zinc-900/10 border border-zinc-900 rounded p-8 mb-8">
+      <section className={`bg-zinc-900/10 border border-zinc-900 rounded p-8 mb-8 transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
         <div className="flex justify-between items-center mb-8">
           <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
             The Revelation Curve <span className="text-zinc-700 ml-2 font-normal italic">[Information Rollout Plan]</span>
           </div>
-          <div className="flex gap-4">
-             <div className="flex items-center gap-2 text-[8px] uppercase text-zinc-600">
-                <div className="w-2 h-0.5 bg-crimson" /> Discovery
-              </div>
-              <div className="flex items-center gap-2 text-[8px] uppercase text-zinc-600">
-                <div className="w-2 h-0.5 bg-zinc-800" /> Latency
-              </div>
-          </div>
+          {hasWound && (
+            <div className="flex gap-4">
+               <div className="flex items-center gap-2 text-[8px] uppercase text-zinc-600">
+                  <div className="w-2 h-0.5 bg-crimson" /> Discovery
+                </div>
+                <div className="flex items-center gap-2 text-[8px] uppercase text-zinc-600">
+                  <div className="w-2 h-0.5 bg-zinc-800" /> Latency
+                </div>
+            </div>
+          )}
         </div>
 
-        <div className="h-64 relative">
-          <svg viewBox="0 0 800 100" className="w-full h-full" preserveAspectRatio="none">
-             {/* Diagonal Grid */}
-             {[...Array(10)].map((_, i) => (
-                <line key={i} x1={i * 80} y1="0" x2={i * 80} y2="100" stroke="#161618" strokeWidth="0.5" />
-             ))}
-             
-             {/* The Curve */}
-             <motion.polyline
-                points={polylinePoints}
-                fill="none"
-                stroke="#990000"
-                strokeWidth="1.5"
-                strokeDasharray="4 2"
-                initial={{ pathLength: 0 }}
-                animate={{ pathLength: 1 }}
-                transition={{ duration: 1.5, ease: "linear" }}
-              />
+        <div className="h-64 relative flex items-center justify-center">
+          {hasWound ? (
+            <svg viewBox="0 0 800 100" className="w-full h-full" preserveAspectRatio="none">
+               {/* Diagonal Grid */}
+               {[...Array(10)].map((_, i) => (
+                  <line key={i} x1={i * 80} y1="0" x2={i * 80} y2="100" stroke="#161618" strokeWidth="0.5" />
+               ))}
+               
+               {/* The Curve */}
+               <motion.polyline
+                  points={polylinePoints}
+                  fill="none"
+                  stroke="#990000"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.5, ease: "linear" }}
+                />
 
-              {/* Discovery Slabs */}
-              {revelationPoints.filter((_, i) => i % 3 === 0).map((p, i) => (
-                <g key={i}>
-                  <rect x={p.x - 1} y="0" width="2" height="100" fill="rgba(153, 0, 0, 0.05)" />
-                  <text x={p.x + 5} y="15" fill="#52525b" fontSize="8" className="uppercase font-mono tracking-tighter">
-                    Rupture Point {i+1}
-                  </text>
-                </g>
-              ))}
-          </svg>
+                {/* Discovery Slabs */}
+                {revelationPoints.filter((_, i) => i % 3 === 0).map((p, i) => (
+                  <g key={i}>
+                    <rect x={p.x - 1} y="0" width="2" height="100" fill="rgba(153, 0, 0, 0.05)" />
+                    <text x={p.x + 5} y="15" fill="#52525b" fontSize="8" className="uppercase font-mono tracking-tighter">
+                      Rupture Point {i+1}
+                    </text>
+                  </g>
+                ))}
+            </svg>
+          ) : (
+            <div className="text-[10px] text-zinc-800 font-mono tracking-[0.5em] uppercase">
+              Awaiting Timeline Mapping
+            </div>
+          )}
         </div>
       </section>
 
       {/* Chapter Revelation Mapping */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className={`grid grid-cols-1 md:grid-cols-2 gap-8 transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
          <section className="space-y-4">
             <div className="flex items-center gap-2 mb-2">
               <Share2 size={14} className="text-zinc-500" />
               <h3 className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Structural Propositions</h3>
             </div>
             <div className="space-y-2">
-              {[
+              {hasWound ? [
                 "Protagonist's Complicity revealed via institutional data.",
                 "The 'False Premise' of the Wound is inverted.",
                 "Character B's true position is signaled in peripheral description."
@@ -110,20 +121,30 @@ export const StructuralCortex = () => {
                    <span className="text-crimson font-bold">PROP_{i+1}</span>
                    {p}
                 </div>
-              ))}
+              )) : (
+                <div className="p-8 border border-zinc-900 bg-zinc-950/50 rounded flex items-center justify-center">
+                   <span className="text-[9px] text-zinc-800 font-mono uppercase">Propositions Offline</span>
+                </div>
+              )}
             </div>
          </section>
 
-         <section className="bg-zinc-900/30 border border-zinc-800 p-6 flex flex-col justify-center gap-4">
+         <section className={`bg-zinc-900/30 border border-zinc-800 p-6 flex flex-col justify-center gap-4 ${!hasWound && 'opacity-20 cursor-not-allowed'}`}>
             <div className="flex gap-2">
                <Info size={16} className="text-zinc-600 shrink-0" />
                <p className="text-[10px] text-zinc-500 uppercase leading-relaxed tracking-wide">
-                 Revelation density is currently <span className="text-crimson font-bold">UNBALANCED</span>. 
-                 Chapters 4 through 6 carry 70% of the narrative significance.
-                 Consider redistributing the 'Somatic Suppression' signature to Chapter 3.
+                 {hasWound ? (
+                   <>
+                     Revelation density is currently <span className="text-crimson font-bold">UNBALANCED</span>. 
+                     Chapters 4 through 6 carry 70% of the narrative significance.
+                     Consider redistributing the 'Somatic Suppression' signature to Chapter 3.
+                   </>
+                 ) : (
+                   "Revelation density diagnostics will activate upon architecture initialization."
+                 )}
                </p>
             </div>
-            <button className="w-full py-3 bg-zinc-800 border border-zinc-700 text-bone text-[10px] uppercase font-bold tracking-widest hover:bg-zinc-700 transition-all">
+            <button className="w-full py-3 bg-zinc-800 border border-zinc-700 text-bone text-[10px] uppercase font-bold tracking-widest hover:bg-zinc-700 transition-all disabled:opacity-20" disabled={!hasWound}>
                REBALANCE TIMELINE
             </button>
          </section>

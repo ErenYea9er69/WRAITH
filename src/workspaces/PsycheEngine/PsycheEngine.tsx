@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 export const PsycheEngine = () => {
   const { project } = useWraithStore();
+  const hasWound = project.wound.trim().length > 0;
 
   return (
     <div className="flex flex-col bg-[#0a0a0b] p-8 min-h-full">
@@ -28,7 +29,7 @@ export const PsycheEngine = () => {
               <Shield size={14} className="text-zinc-500" />
               <h3 className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">The Formative Rupture</h3>
             </div>
-            <div className="p-4 bg-zinc-900/40 border border-zinc-800 border-l-2 border-l-crimson">
+            <div className={`p-4 bg-zinc-900/40 border border-zinc-800 border-l-2 transition-all duration-500 ${hasWound ? 'border-l-crimson' : 'border-l-zinc-800 opacity-40'}`}>
               <p className="text-xs text-bone leading-relaxed italic pr-4">
                 "The event that preceded the story and permanently altered the character's relationship with trust, power, guilt, or attachment."
               </p>
@@ -86,26 +87,28 @@ export const PsycheEngine = () => {
             Living State // Mask Load Readings
           </div>
           <div className="flex gap-4 items-center">
-            <div className="text-[9px] text-zinc-600 uppercase">System Frequency: <span className="text-bone">4.2Hz</span></div>
-            <div className="px-2 py-0.5 bg-crimson/10 border border-crimson/20 text-[8px] text-crimson font-bold uppercase tracking-tighter">Live Monitor</div>
+            <div className="text-[9px] text-zinc-600 uppercase">System Frequency: <span className="text-bone">{hasWound ? '4.2Hz' : '0.0Hz'}</span></div>
+            <div className={`px-2 py-0.5 border text-[8px] font-bold uppercase tracking-tighter transition-colors ${hasWound ? 'bg-crimson/10 border-crimson/20 text-crimson' : 'bg-zinc-900 border-zinc-800 text-zinc-600'}`}>
+              {hasWound ? 'Live Monitor' : 'Standby'}
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 h-96">
           {/* Mask Load Gauge */}
-          <div className="lg:col-span-2 bg-zinc-900/10 border border-zinc-900 rounded p-8 flex flex-col relative overflow-hidden group">
+          <div className={`lg:col-span-2 bg-zinc-900/10 border border-zinc-900 rounded p-8 flex flex-col relative overflow-hidden group transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
             <div className="flex justify-between mb-8">
               <div className="space-y-1">
                 <h4 className="text-[11px] text-zinc-400 font-bold uppercase">Aggregated Mask Load</h4>
                 <p className="text-[9px] text-zinc-600 italic">Discrepancy between exterior manifestation and interior truth.</p>
               </div>
-              <div className="text-3xl font-bold text-crimson font-mono">
-                72<span className="text-xs text-zinc-700 ml-1">%</span>
+              <div className={`text-3xl font-bold font-mono transition-colors ${hasWound ? 'text-crimson' : 'text-zinc-800'}`}>
+                {hasWound ? '72' : '00'}<span className="text-xs text-zinc-700 ml-1">%</span>
               </div>
             </div>
 
             <div className="flex-1 flex items-end gap-1">
-              {[...Array(40)].map((_, i) => {
+              {hasWound ? [...Array(40)].map((_, i) => {
                 const height = Math.random() * 80 + 20;
                 const isActive = i < 28; // ~70%
                 return (
@@ -117,22 +120,26 @@ export const PsycheEngine = () => {
                     className={`flex-1 ${isActive ? 'bg-crimson/40 hover:bg-crimson' : 'bg-zinc-900'} transition-colors duration-300 cursor-help`}
                   />
                 );
-              })}
+              }) : (
+                <div className="w-full text-center text-[10px] text-zinc-800 font-mono tracking-widest mb-12 uppercase">Awaiting Psychic Signal</div>
+              )}
             </div>
             
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-              <div className="bg-[#0a0a0b] border border-crimson p-3 shadow-2xl">
-                <span className="text-[10px] text-crimson font-bold uppercase block mb-1">Drift Alert</span>
-                <p className="text-[9px] text-zinc-500 leading-tight">Protagonist is maintaining a 'Complicit Witness' mask despite 'Bureaucratic Harm' pressure.</p>
+            {hasWound && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                <div className="bg-[#0a0a0b] border border-crimson p-3 shadow-2xl">
+                  <span className="text-[10px] text-crimson font-bold uppercase block mb-1">Drift Alert</span>
+                  <p className="text-[9px] text-zinc-500 leading-tight">Protagonist is maintaining a 'Complicit Witness' mask despite 'Bureaucratic Harm' pressure.</p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Signature Deployment Feed */}
-          <div className="bg-zinc-900/10 border border-zinc-900 rounded p-6 flex flex-col">
+          <div className={`bg-zinc-900/10 border border-zinc-900 rounded p-6 flex flex-col transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
             <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-6">Signature Log</div>
             <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-zinc-800">
-              {[
+              {hasWound ? [
                 { time: '14:22', sig: 'Evasive Redirect', status: 'Active', color: 'crimson' },
                 { time: '12:05', sig: 'Bureaucratic Deference', status: 'Logged', color: 'zinc-700' },
                 { time: '09:40', sig: 'Somatic Suppression', status: 'Logged', color: 'zinc-700' },
@@ -147,9 +154,11 @@ export const PsycheEngine = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="h-full flex items-center justify-center text-[9px] text-zinc-800 font-mono uppercase">Log Empty</div>
+              )}
             </div>
-            <button className="mt-6 w-full py-2 bg-zinc-900 border border-zinc-800 text-[9px] text-zinc-500 uppercase tracking-widest font-bold hover:bg-zinc-800 hover:text-bone transition-all">
+            <button className="mt-6 w-full py-2 bg-zinc-900 border border-zinc-800 text-[9px] text-zinc-500 uppercase tracking-widest font-bold hover:bg-zinc-800 hover:text-bone transition-all disabled:opacity-20 disabled:cursor-not-allowed" disabled={!hasWound}>
               Initialize New Signature
             </button>
           </div>

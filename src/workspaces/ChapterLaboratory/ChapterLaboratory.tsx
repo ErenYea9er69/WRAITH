@@ -6,6 +6,7 @@ import { useState } from 'react';
 export const ChapterLaboratory = () => {
   const { project } = useWraithStore();
   const [activeLayer, setActiveLayer] = useState<'psych' | 'struct' | 'thematic'>('psych');
+  const hasWound = project.wound.trim().length > 0;
 
   const chapters = [
     { id: 'CH_01', type: 'Establishment', intensity: 30, maskLoad: 12 },
@@ -26,13 +27,13 @@ export const ChapterLaboratory = () => {
           <div>
             <h1 className="text-2xl font-bold tracking-tighter text-bone uppercase italic">Chapter Laboratory</h1>
             <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-mono">
-              Workspace Five // Simulated Draft Environment // {project.isOriginComplete ? 'System Initialized' : 'Origin Pending'}
+              Workspace Five // Simulated Draft Environment // {hasWound ? 'System Initialized' : 'Origin Pending'}
             </p>
           </div>
         </div>
 
         <div className="flex gap-2">
-           <button className="flex items-center gap-2 px-4 py-2 bg-crimson text-bone font-bold text-[10px] uppercase tracking-widest hover:bg-crimson/80 transition-all border border-crimson/20">
+           <button className="flex items-center gap-2 px-4 py-2 bg-crimson text-bone font-bold text-[10px] uppercase tracking-widest hover:bg-crimson/80 transition-all border border-crimson/20 disabled:opacity-20" disabled={!hasWound}>
               <Play size={12} fill="currentColor" /> Run Simulation
            </button>
            <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 text-zinc-400 font-bold text-[10px] uppercase tracking-widest hover:bg-zinc-800 transition-all">
@@ -43,13 +44,13 @@ export const ChapterLaboratory = () => {
 
       <div className="flex-1 grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Main Grid Section */}
-        <section className="lg:col-span-3 flex flex-col gap-6">
+        <section className={`lg:col-span-3 flex flex-col gap-6 transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
            <div className="flex justify-between items-center bg-zinc-950 border border-zinc-900/50 p-2 rounded-sm overflow-hidden">
               <div className="flex">
                  {(['psych', 'struct', 'thematic'] as const).map(layer => (
                    <button 
                      key={layer}
-                     onClick={() => setActiveLayer(layer)}
+                     onClick={() => hasWound && setActiveLayer(layer)}
                      className={`px-6 py-2 text-[9px] uppercase font-bold tracking-widest transition-all ${activeLayer === layer ? 'bg-zinc-900 text-bone' : 'text-zinc-600 hover:text-zinc-400'}`}
                    >
                      {layer}_Layer
@@ -57,13 +58,13 @@ export const ChapterLaboratory = () => {
                  ))}
               </div>
               <div className="px-4 text-[8px] text-zinc-800 font-bold uppercase tracking-tighter italic">
-                 Multiphase Analysis Active
+                 {hasWound ? 'Multiphase Analysis Active' : 'Analysis Standby'}
               </div>
            </div>
 
            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
               <AnimatePresence mode="popLayout">
-                 {chapters.map((ch, i) => (
+                 {hasWound ? chapters.map((ch, i) => (
                    <motion.div 
                      layout
                      initial={{ opacity: 0, scale: 0.95 }}
@@ -115,7 +116,14 @@ export const ChapterLaboratory = () => {
                          CHAPTER END_GATE
                       </div>
                    </motion.div>
-                 ))}
+                 )) : (
+                   <div className="col-span-full border border-zinc-900 border-dashed rounded flex flex-col items-center justify-center p-12 opacity-20">
+                      <div className="text-[10px] text-zinc-800 font-mono uppercase tracking-[0.5em] mb-4">Laboratory Standby</div>
+                      <p className="text-[9px] text-zinc-800 uppercase text-center max-w-xs leading-relaxed">
+                        Simulated draft segments will manifest once the psychological architecture is initialized in the Origin Chamber.
+                      </p>
+                   </div>
+                 )}
                  <div className="border border-zinc-900 border-dashed rounded flex items-center justify-center p-8 opacity-20 hover:opacity-100 transition-opacity cursor-pointer group">
                     <span className="text-[10px] text-zinc-700 uppercase font-bold group-hover:text-bone transition-colors">+ NEW CHAPTER SEGMENT</span>
                  </div>
@@ -135,13 +143,19 @@ export const ChapterLaboratory = () => {
                  <p className="text-zinc-800">[ LOADING_DRAFT_OBJECTS ]</p>
                  <p className="mb-4 text-zinc-800">[ ANALYZING_REVELATION_DENSITY ]</p>
                  <div className="space-y-2">
-                    <p className="text-bone animate-pulse">#_DIAGNOSTIC: CH_03 INTENSITY PEAK CAUSING PSYCH_SLIPPAGE (85%).</p>
-                    <p className="text-crimson">#_ALERT: RECOMMEND_LATENCY_BUFFER_INCREASE_CH_04.</p>
-                    <p>#_LOG: STORY_SPINE_SYNCHRONIZED_SUCCESSFULLY.</p>
-                    <p>#_LOG: PERIPHERAL_FEED_ESTABLISHED.</p>
+                    {hasWound ? (
+                      <>
+                        <p className="text-bone animate-pulse">#_DIAGNOSTIC: CH_03 INTENSITY PEAK CAUSING PSYCH_SLIPPAGE (85%).</p>
+                        <p className="text-crimson">#_ALERT: RECOMMEND_LATENCY_BUFFER_INCREASE_CH_04.</p>
+                        <p>#_LOG: STORY_SPINE_SYNCHRONIZED_SUCCESSFULLY.</p>
+                        <p>#_LOG: PERIPHERAL_FEED_ESTABLISHED.</p>
+                      </>
+                    ) : (
+                      <p className="text-zinc-800 italic">#_LOG: IDLE_STATE_ACTIVE. AWAITING_NARRATIVE_OBJECTS.</p>
+                    )}
                  </div>
               </div>
-              <div className="mt-4 p-4 border border-zinc-900/50 bg-zinc-900/10">
+              <div className={`mt-4 p-4 border border-zinc-900/50 bg-zinc-900/10 transition-opacity ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
                  <div className="flex items-center gap-2 mb-2">
                     <Layers size={12} className="text-zinc-600" />
                     <span className="text-[9px] text-zinc-600 uppercase font-bold">Active Layer</span>
