@@ -4,6 +4,7 @@ import { DraftSpine } from './components/DraftSpine';
 import { useWraithStore } from './store/useWraithStore';
 import { OriginChamber } from './workspaces/OriginChamber/OriginChamber';
 import { SignalRoom } from './workspaces/SignalRoom/SignalRoom';
+import { PsycheEngine } from './workspaces/PsycheEngine/PsycheEngine';
 
 function App() {
   const { activeWorkspace, project } = useWraithStore();
@@ -17,6 +18,7 @@ function App() {
     switch (activeWorkspace) {
       case 'origin': return <OriginChamber />;
       case 'signal': return <SignalRoom />;
+      case 'psyche': return <PsycheEngine />;
       // Placeholders for others
       default: return (
         <div className="flex items-center justify-center h-full text-zinc-700 uppercase tracking-widest text-sm">

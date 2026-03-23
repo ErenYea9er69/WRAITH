@@ -8,14 +8,25 @@ interface ProjectState {
   pressures: string[];
   collapseQuestion: {
     question: string;
-    charA: string;
-    charB: string;
+    charA: { name: string; position: string };
+    charB: { name: string; position: string };
   };
   compass: {
     voiceRegister: string;
-    sentenceBehavior: string;
+    sentenceBehavior: {
+      maxLengthAction: number;
+      maxLengthEmotional: number;
+      maxLengthTransitional: number;
+      coordinationVsSubordination: 'coordination' | 'subordination';
+      forbiddenPatterns: string[];
+    };
     avoidWords: string[];
-    pacingRatios: Record<string, number>;
+    pacingRatios: {
+      action: number;
+      interiority: number;
+      dialogue: number;
+      description: number;
+    };
     rhythmRules: string;
   };
   isOriginComplete: boolean;
@@ -37,12 +48,27 @@ export const useWraithStore = create<WraithStore>()(
       project: {
         wound: '',
         pressures: [],
-        collapseQuestion: { question: '', charA: '', charB: '' },
+        collapseQuestion: { 
+          question: '', 
+          charA: { name: '', position: '' }, 
+          charB: { name: '', position: '' } 
+        },
         compass: {
           voiceRegister: '',
-          sentenceBehavior: '',
+          sentenceBehavior: {
+            maxLengthAction: 20,
+            maxLengthEmotional: 35,
+            maxLengthTransitional: 25,
+            coordinationVsSubordination: 'subordination',
+            forbiddenPatterns: [],
+          },
           avoidWords: [],
-          pacingRatios: {},
+          pacingRatios: {
+            action: 25,
+            interiority: 25,
+            dialogue: 25,
+            description: 25,
+          },
           rhythmRules: '',
         },
         isOriginComplete: false,
