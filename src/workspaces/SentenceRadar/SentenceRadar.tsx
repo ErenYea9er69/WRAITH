@@ -48,6 +48,45 @@ export const SentenceRadar = () => {
         ))}
       </div>
 
+      {/* Dialogue Facade Layer */}
+      <section className="mb-12 bg-crimson/5 border border-crimson/20 p-8 rounded-sm">
+        <div className="flex items-center gap-2 mb-6">
+          <Beaker size={18} className="text-crimson" />
+          <h3 className="text-[12px] text-bone uppercase tracking-widest font-bold">Dialogue Facade Layer // Subtext Diagnostic</h3>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2 space-y-4">
+             <div className="text-[10px] text-zinc-500 uppercase tracking-tight">Active Discrepancy Detection</div>
+             <div className="p-4 bg-zinc-900/40 border border-zinc-800 font-mono text-xs leading-relaxed">
+                <span className="text-zinc-600">"I don't know what you're talking about, Ji-won. I was at the office all night."</span>
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="mt-4 p-3 bg-crimson/10 border border-crimson/20 text-[10px] text-crimson uppercase font-bold"
+                >
+                  Subtext Alert: Direct contradiction with [Internal Truth: Evidence of Premeditation].
+                </motion.div>
+             </div>
+          </div>
+          
+          <div className="bg-zinc-900/10 border border-zinc-900 p-6 flex flex-col justify-between">
+             <div className="space-y-4">
+                <div className="text-[9px] text-zinc-600 uppercase font-bold">Facade Transparency</div>
+                <div className="text-4xl font-bold text-bone">84<span className="text-sm ml-1 text-zinc-700">%</span></div>
+                <p className="text-[9px] text-zinc-600 leading-tight uppercase">High risk of premature discovery. Dialogue lacks necessary 'Emotional Buffer' or 'Evasive Redirect' signatures.</p>
+             </div>
+             <div className="h-2 bg-zinc-950 rounded-full overflow-hidden mt-6">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: '84%' }}
+                  className="h-full bg-crimson shadow-[0_0_8px_rgba(153,0,0,0.6)]"
+                />
+             </div>
+          </div>
+        </div>
+      </section>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Coordination Map (Mock visualization) */}
         <section className="md:col-span-2 bg-zinc-900/5 border border-zinc-900 p-8">

@@ -1,6 +1,6 @@
 import { useWraithStore } from '../../store/useWraithStore';
 import { motion } from 'framer-motion';
-import { Layers, Share2, Info } from 'lucide-react';
+import { Layers, Share2, Info, Activity } from 'lucide-react';
 
 export const StructuralCortex = () => {
   const { project } = useWraithStore();
@@ -101,6 +101,54 @@ export const StructuralCortex = () => {
               Awaiting Timeline Mapping
             </div>
           )}
+        </div>
+      </section>
+
+      {/* Twist Integrity Monitor */}
+      <section className={`mb-12 bg-zinc-900/10 border border-zinc-900 p-8 rounded-sm transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
+        <div className="flex items-center gap-2 mb-6">
+          <Activity size={16} className="text-crimson" />
+          <h2 className="text-[12px] text-bone uppercase tracking-widest font-bold">Twist Integrity Monitor // Retroactive Reframing</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+           <div className="lg:col-span-2 space-y-4">
+              <div className="text-[10px] text-zinc-600 uppercase font-bold tracking-tight">Active Revelation Simulation</div>
+              <div className="p-6 bg-zinc-900/30 border border-zinc-800 rounded-sm">
+                 <div className="flex justify-between items-center mb-4">
+                    <span className="text-[11px] text-zinc-400 font-bold uppercase tracking-widest">Target Reveal: The Mentor is the Origin</span>
+                    <span className="px-2 py-0.5 bg-crimson/10 border border-crimson/20 text-[8px] text-crimson font-bold uppercase">Simulating...</span>
+                 </div>
+                 <div className="space-y-3">
+                    {[
+                      { fact: 'Mentor was in Tokyo during the first murder.', status: 'Conflict', severity: 'High' },
+                      { fact: 'Protagonist found the mentor\'s lighter at the scene.', status: 'Verified', severity: 'Safe' },
+                      { fact: 'Mentor is known to be a "Genetic Anomaly" (Ref. Mouse).', status: 'Pending', severity: 'Mid' },
+                    ].map((f, i) => (
+                      <div key={i} className="flex justify-between items-center p-3 bg-[#0a0a0b] border border-zinc-900">
+                         <span className="text-[10px] text-zinc-500 font-mono tracking-tight">{f.fact}</span>
+                         <span className={`text-[8px] font-bold uppercase ${f.status === 'Conflict' ? 'text-crimson' : 'text-zinc-700'}`}>{f.status}</span>
+                      </div>
+                    ))}
+                 </div>
+              </div>
+           </div>
+           
+           <div className="flex flex-col gap-4">
+              <div className="p-6 border border-zinc-900 bg-zinc-900/20 flex flex-col justify-between h-full">
+                 <div className="space-y-4">
+                   <div className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Logic Continuity Score</div>
+                   <div className="text-4xl font-bold text-bone font-mono">31<span className="text-sm ml-1 text-zinc-700">%</span></div>
+                   <p className="text-[9px] text-zinc-500 uppercase leading-relaxed tracking-wider">
+                     Twist contains <span className="text-crimson font-bold">CRITICAL DECOUPLING</span>. 
+                     The current projection breaks 3 core promises in the Continuity Architecture.
+                   </p>
+                 </div>
+                 <button className="w-full py-2 bg-crimson shadow-[0_0_15px_rgba(153,0,0,0.3)] text-bone text-[9px] uppercase font-bold tracking-widest hover:bg-crimson/80 mt-6" disabled={!hasWound}>
+                    Repair Logic Loop
+                 </button>
+              </div>
+           </div>
         </div>
       </section>
 

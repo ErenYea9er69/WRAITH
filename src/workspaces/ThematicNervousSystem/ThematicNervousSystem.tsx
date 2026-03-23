@@ -1,6 +1,6 @@
 import { useWraithStore } from '../../store/useWraithStore';
 import { motion } from 'framer-motion';
-import { Tent, GitMerge, List, Zap } from 'lucide-react';
+import { Tent, GitMerge, List, Zap, CloudRain, Sun, Moon, Thermometer } from 'lucide-react';
 
 export const ThematicNervousSystem = () => {
   const { project } = useWraithStore();
@@ -63,6 +63,32 @@ export const ThematicNervousSystem = () => {
            </div>
         </div>
       </header>
+
+      {/* Atmospheric Resonance Module */}
+      <section className="mb-12 space-y-6">
+        <div className="flex items-center gap-2 mb-4">
+          <CloudRain size={16} className="text-zinc-500" />
+          <h2 className="text-[12px] text-bone uppercase tracking-widest font-bold">Atmospheric Resonance Module</h2>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[
+            { title: 'Somatic Grotesque', icon: <Thermometer size={14} />, desc: 'High physical discomfort. Fetid humidity. High contrast.', active: true },
+            { title: 'Sterile Isolation', icon: <Moon size={14} />, desc: 'Fluorescent hum. Cold palettes. Infinite silence.', active: false },
+            { title: 'Bureaucratic Decay', icon: <CloudRain size={14} />, desc: 'Persistent drizzle. Paper rot. Gray-scale bias.', active: false },
+            { title: 'Arterial Bloom', icon: <Sun size={14} />, desc: 'Crimson saturation. Extreme stakes. Pulse-responsive lighting.', active: false },
+          ].map((a, i) => (
+            <div key={i} className={`p-4 border transition-all cursor-pointer group ${a.active ? 'bg-crimson/10 border-crimson/40' : 'bg-zinc-900/10 border-zinc-900 hover:border-zinc-800'}`}>
+              <div className="flex justify-between items-start mb-4">
+                <div className={`${a.active ? 'text-crimson' : 'text-zinc-700'} group-hover:text-zinc-500 transition-colors`}>{a.icon}</div>
+                {a.active && <span className="text-[8px] text-crimson font-bold uppercase tracking-widest">Active</span>}
+              </div>
+              <h4 className={`text-[11px] font-bold uppercase mb-2 ${a.active ? 'text-bone' : 'text-zinc-500'}`}>{a.title}</h4>
+              <p className="text-[9px] text-zinc-600 leading-tight uppercase">{a.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Staging Moments */}
       <section className="flex-1 space-y-6">

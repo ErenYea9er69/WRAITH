@@ -1,5 +1,5 @@
 import { useWraithStore } from '../../store/useWraithStore';
-import { User, Shield, Zap, Info } from 'lucide-react';
+import { User, Shield, Zap, Info, Activity } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const PsycheEngine = () => {
@@ -161,6 +161,76 @@ export const PsycheEngine = () => {
             <button className="mt-6 w-full py-2 bg-zinc-900 border border-zinc-800 text-[9px] text-zinc-500 uppercase tracking-widest font-bold hover:bg-zinc-800 hover:text-bone transition-all disabled:opacity-20 disabled:cursor-not-allowed" disabled={!hasWound}>
               Initialize New Signature
             </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Character Arc Projection */}
+      <section className={`mt-12 border-t border-zinc-900 pt-12 transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
+        <div className="flex items-center gap-2 mb-6">
+          <Activity size={14} className="text-crimson" />
+          <h3 className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Character Arc Projection // Evolution tracking</h3>
+        </div>
+        
+        <div className="bg-zinc-900/10 border border-zinc-900 p-8 relative rounded-sm group overflow-hidden">
+          <div className="flex justify-between items-start mb-12">
+            <div className="space-y-1">
+              <span className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest block">Trajectory: [Naive] → [Psychopath]</span>
+              <p className="text-[11px] text-bone uppercase tracking-tight">Emotional Sincerity vs. Behavioral Dread</p>
+            </div>
+            <div className="flex gap-8">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-zinc-600" />
+                <span className="text-[8px] text-zinc-600 uppercase">Sincerity</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-crimson" />
+                <span className="text-[8px] text-crimson uppercase">Dread</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="h-48 relative px-4">
+            <svg className="w-full h-full" viewBox="0 0 1000 200" preserveAspectRatio="none">
+              {/* Sincerity Line */}
+              <motion.path
+                d="M0,50 L100,60 L200,80 L300,120 L400,150 L500,180 L600,190 L700,200 L800,200 L1000,200"
+                fill="none"
+                stroke="#52525b"
+                strokeWidth="2"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: hasWound ? 1 : 0 }}
+                transition={{ duration: 2, ease: "easeOut" }}
+              />
+              {/* Dread Line */}
+              <motion.path
+                d="M0,180 L100,170 L200,150 L300,100 L400,60 L500,40 L600,30 L700,20 L800,10 L1000,5"
+                fill="none"
+                stroke="#990000"
+                strokeWidth="2"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: hasWound ? 1 : 0 }}
+                transition={{ duration: 2.5, ease: "easeOut" }}
+              />
+            </svg>
+            
+            {/* Labels */}
+            <div className="absolute left-0 bottom-0 text-[8px] text-zinc-800 uppercase tracking-tighter">Genesis</div>
+            <div className="absolute right-0 bottom-0 text-[8px] text-zinc-800 uppercase tracking-tighter text-right">Climax</div>
+          </div>
+          
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { label: 'Baseline', value: 'SINCERE', color: 'zinc-500' },
+              { label: 'Rupture Peak', value: 'CH_03', color: 'zinc-400' },
+              { label: 'Moral Erosion', value: '62%', color: 'crimson' },
+              { label: 'Unmasking', value: 'PROBABLE', color: 'crimson' },
+            ].map((m, i) => (
+              <div key={i} className="border-l border-zinc-900 pl-4 py-1">
+                <span className="text-[8px] text-zinc-700 uppercase block font-bold mb-1 tracking-tighter">{m.label}</span>
+                <span className={`text-[11px] text-${m.color} uppercase font-bold tracking-widest`}>{m.value}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
