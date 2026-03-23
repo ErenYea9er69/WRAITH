@@ -9,6 +9,8 @@ import { StructuralCortex } from './workspaces/StructuralCortex/StructuralCortex
 import { SentenceRadar } from './workspaces/SentenceRadar/SentenceRadar';
 import { ThematicNervousSystem } from './workspaces/ThematicNervousSystem/ThematicNervousSystem';
 import { ChapterLaboratory } from './workspaces/ChapterLaboratory/ChapterLaboratory';
+import { DreadArchitecture } from './workspaces/DreadArchitecture/DreadArchitecture';
+import { ContinuityArchitecture } from './workspaces/ContinuityArchitecture/ContinuityArchitecture';
 
 function App() {
   const { activeWorkspace, project } = useWraithStore();
@@ -27,6 +29,8 @@ function App() {
       case 'radar': return <SentenceRadar />;
       case 'thematics': return <ThematicNervousSystem />;
       case 'laboratory': return <ChapterLaboratory />;
+      case 'dread': return <DreadArchitecture />;
+      case 'continuity': return <ContinuityArchitecture />;
       // Placeholders for others
       default: return (
         <div className="flex items-center justify-center h-full text-zinc-700 uppercase tracking-widest text-sm">

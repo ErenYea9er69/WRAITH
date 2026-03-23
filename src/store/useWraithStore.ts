@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-export type WorkspaceId = 'origin' | 'signal' | 'psyche' | 'cortex' | 'radar' | 'thematics' | 'nerve' | 'archive' | 'revelation' | 'laboratory' | 'thematic' | 'structural';
+export type WorkspaceId = 'origin' | 'signal' | 'psyche' | 'cortex' | 'radar' | 'thematics' | 'laboratory' | 'dread' | 'continuity' | 'archive' | 'revelation' | 'thematic' | 'structural';
 
 interface ProjectState {
   wound: string;

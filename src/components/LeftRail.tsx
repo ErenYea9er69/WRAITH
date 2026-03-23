@@ -11,7 +11,8 @@ import {
   FlaskConical, 
   Eye, 
   History,
-  AlertCircle
+  AlertCircle,
+  GitBranch
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -21,10 +22,9 @@ const WORKSPACES: { id: WorkspaceId; icon: any; label: string; status?: 'amber' 
   { id: 'psyche', icon: User, label: 'Psyche Engine', status: 'dark' },
   { id: 'cortex', icon: Layers, label: 'Structural Cortex', status: 'dark' },
   { id: 'radar', icon: Activity, label: 'Sentence Radar', status: 'dark' },
-  { id: 'revelation', icon: Key, label: 'Revelation Web', status: 'none' },
-  { id: 'thematics', icon: Tent, label: 'Thematic System', status: 'dark' },
   { id: 'laboratory', icon: FlaskConical, label: 'Chapter Lab', status: 'dark' },
-  { id: 'nerve', icon: Activity, label: 'Nervous System', status: 'none' },
+  { id: 'dread', icon: Eye, label: 'Dread Architecture', status: 'dark' },
+  { id: 'continuity', icon: GitBranch, label: 'Continuity System', status: 'dark' },
   { id: 'archive', icon: History, label: 'Archive', status: 'none' },
 ];
 
