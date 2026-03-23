@@ -95,12 +95,19 @@ body {
   background-color: var(--bg-main);
   overflow-y: auto;
   position: relative;
+  min-height: 0;
 }
 
 .peripheral {
   background-color: var(--bg-main);
   border-left: 1px solid #222;
   overflow-y: auto;
+  min-height: 0;
+}
+
+/* Workspace Padding for Draft Spine clearance */
+.workspace-content-padding {
+  padding-bottom: 80px;
 }
 
 .draft-spine {

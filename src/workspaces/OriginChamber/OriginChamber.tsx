@@ -41,7 +41,7 @@ export const OriginChamber = () => {
   };
 
   return (
-    <div className="flex flex-col bg-[#0a0a0b] p-12 max-w-5xl mx-auto min-h-full">
+    <div className="flex flex-col bg-[#0a0a0b] p-12 max-w-5xl mx-auto min-h-full workspace-content-padding">
       {/* Header */}
       <div className="mb-12 shrink-0">
         <h1 className="text-4xl font-bold tracking-tight mb-4 flex items-center gap-4">
