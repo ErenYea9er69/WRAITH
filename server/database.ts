@@ -14,28 +14,37 @@ export const get = promisify(db.get.bind(db));
 export const all = promisify(db.all.bind(db));
 
 export const initDB = async () => {
-  await run(`
-    CREATE TABLE IF NOT EXISTS projects (
-      id TEXT PRIMARY KEY,
-      wound TEXT,
-      pressures TEXT,
-      collapseQuestion TEXT,
-      compass TEXT,
-      isOriginComplete INTEGER,
-      lastUpdated DATETIME DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+  try {
+    await run(`
+      CREATE TABLE IF NOT EXISTS projects (
+        id TEXT PRIMARY KEY,
+        wound TEXT,
+        pressures TEXT,
+        collapseQuestion TEXT,
+        compass TEXT,
+        chapters TEXT,
+        isOriginComplete INTEGER,
+        lastUpdated DATETIME DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-  await run(`
-    CREATE TABLE IF NOT EXISTS chapters (
-      project_id TEXT,
-      chapter_id TEXT,
-      type TEXT,
-      intensity INTEGER,
-      maskLoad INTEGER,
-      PRIMARY KEY (project_id, chapter_id)
-    )
-  `);
+    // Migration: Add chapters column if it doesn't exist (for existing tables)
+    try {
+      await run('ALTER TABLE projects ADD COLUMN chapters TEXT');
+    } catch (e) {
+      // Column likely already exists
+    }
+
+    // Clean up redundant table if it exists
+    try {
+      await run('DROP TABLE IF EXISTS chapters');
+    } catch (e) {
+      // Ignore
+    }
+  } catch (err) {
+    console.error('Failed to initialize database:', err);
+    throw err;
+  }
 };
 
 export default db;

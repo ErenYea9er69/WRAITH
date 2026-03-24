@@ -14,5 +14,15 @@ export const api = {
       body: JSON.stringify(project),
     });
     return res.ok;
+  },
+
+  async generateChapter(projectId: string, context: any) {
+    const res = await fetch(`${API_BASE}/generate-chapter`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId, context }),
+    });
+    if (!res.ok) return null;
+    return res.json();
   }
 };

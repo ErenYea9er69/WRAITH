@@ -4,6 +4,17 @@ import { api } from '../services/api';
 
 export type WorkspaceId = 'origin' | 'signal' | 'psyche' | 'cortex' | 'radar' | 'thematics' | 'laboratory' | 'dread' | 'continuity' | 'archive' | 'revelation' | 'thematic' | 'structural';
 
+export interface Chapter {
+  id: string;
+  title: string;
+  content: string;
+  type: string;
+  metrics: {
+    intensity: number;
+    maskLoad: number;
+  };
+}
+
 interface ProjectState {
   id: string; // Add id for persistence
   wound: string;
@@ -31,15 +42,20 @@ interface ProjectState {
     };
     rhythmRules: string;
   };
+  chapters: Chapter[];
   isOriginComplete: boolean;
 }
 
 interface WraithStore {
   activeWorkspace: WorkspaceId;
+  activeChapterId: string | null;
   project: ProjectState;
   
   setActiveWorkspace: (id: WorkspaceId) => void;
+  setActiveChapter: (id: string | null) => void;
   updateProject: (data: Partial<ProjectState>) => void;
+  addChapter: (chapter: Omit<Chapter, 'id'>) => Promise<void>;
+  updateChapter: (id: string, data: Partial<Chapter>) => Promise<void>;
   completeOrigin: () => void;
   loadProject: (id: string) => Promise<void>;
 }
@@ -75,10 +91,13 @@ export const useWraithStore = create<WraithStore>()(
           },
           rhythmRules: '',
         },
+        chapters: [],
         isOriginComplete: false,
       },
+      activeChapterId: null,
       
       setActiveWorkspace: (id) => set({ activeWorkspace: id }),
+      setActiveChapter: (id) => set({ activeChapterId: id }),
       
       updateProject: async (data) => {
         set((state) => ({ 
@@ -87,6 +106,33 @@ export const useWraithStore = create<WraithStore>()(
         // Sync to DB
         const fullProject = getStore().project;
         await api.saveProject(fullProject);
+      },
+
+      addChapter: async (chapterData) => {
+        const currentChapters = getStore().project.chapters || [];
+        const id = `CH_${String(currentChapters.length + 1).padStart(2, '0')}`;
+        const newChapter: Chapter = { ...chapterData, id };
+        
+        set((state) => ({
+          project: {
+            ...state.project,
+            chapters: [...currentChapters, newChapter]
+          },
+          activeChapterId: id
+        }));
+        
+        await api.saveProject(getStore().project);
+      },
+
+      updateChapter: async (id, data) => {
+        set((state) => ({
+          project: {
+            ...state.project,
+            chapters: state.project.chapters.map(ch => ch.id === id ? { ...ch, ...data } : ch)
+          }
+        }));
+        
+        await api.saveProject(getStore().project);
       },
 
       completeOrigin: async () => {
@@ -99,9 +145,19 @@ export const useWraithStore = create<WraithStore>()(
       },
 
       loadProject: async (id) => {
-        const remote = await api.getProject(id);
-        if (remote) {
-          set({ project: remote });
+        try {
+          const remote = await api.getProject(id);
+          if (remote && remote.id) {
+            set((state) => ({
+              project: {
+                ...state.project,
+                ...remote,
+                chapters: remote.chapters || []
+              }
+            }));
+          }
+        } catch (err) {
+          console.error('Failed to load project:', err);
         }
       }
     }),
