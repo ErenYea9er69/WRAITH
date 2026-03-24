@@ -5,7 +5,7 @@ export const SignalRoom = () => {
   const { project } = useWraithStore();
 
   // Mock data for Belief Gap
-  const beliefPoints = [
+  const beliefPoints = project.signal?.beliefGap || [
     { x: 0, y: 80 }, { x: 100, y: 70 }, { x: 200, y: 90 }, 
     { x: 300, y: 40 }, { x: 400, y: 60 }, { x: 500, y: 20 },
     { x: 600, y: 85 }, { x: 700, y: 95 }, { x: 800, y: 10 }
@@ -25,7 +25,7 @@ export const SignalRoom = () => {
         </div>
         <div className="flex flex-col items-end gap-1">
           <div className="text-[9px] text-zinc-600 uppercase tracking-widest">
-            Structural Coherence: <span className="text-bone ml-1">{hasWound ? '94.2%' : '0.0%'}</span>
+            Structural Coherence: <span className="text-bone ml-1">{hasWound ? `${project.signal?.coherence || '0.0'}%` : '0.0%'}</span>
           </div>
           <div className="text-[10px] text-zinc-600 uppercase tracking-widest">
             Reader Belief State: <span className={`font-bold ml-2 ${hasWound ? 'text-crimson animate-pulse' : 'text-zinc-800'}`}>

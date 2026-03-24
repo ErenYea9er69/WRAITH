@@ -6,7 +6,7 @@ export const StructuralCortex = () => {
   const { project } = useWraithStore();
   const hasWound = project.wound.trim().length > 0;
 
-  const revelationPoints = [
+  const revelationPoints = project.structural?.revelationCurve || [
     { x: 0, y: 95 }, { x: 100, y: 90 }, { x: 200, y: 85 }, 
     { x: 300, y: 30 }, { x: 400, y: 70 }, { x: 500, y: 60 },
     { x: 600, y: 20 }, { x: 700, y: 15 }, { x: 800, y: 5 }
@@ -37,12 +37,12 @@ export const StructuralCortex = () => {
           </div>
           <div className="space-y-2">
             <span className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Revelation Density</span>
-            <div className={`text-xs font-mono ${hasWound ? 'text-bone' : 'text-zinc-800'}`}>{hasWound ? 'CRITICAL // 8.4 bits/chapter' : '0.0 bits/chapter'}</div>
+            <div className={`text-xs font-mono ${hasWound ? 'text-bone' : 'text-zinc-800'}`}>{hasWound ? `CRITICAL // ${project.structural?.revelationDensity || '0.0 bits/chapter'}` : '0.0 bits/chapter'}</div>
           </div>
           <div className="space-y-2">
             <span className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Structural Health</span>
             <div className={`text-xs font-bold font-mono uppercase ${hasWound ? 'text-crimson' : 'text-zinc-800'}`}>
-              {hasWound ? 'Fragile // Loop Detected' : 'Diagnostic Standby'}
+              {hasWound ? `Consistency: ${project.structural?.logicConsistency || 0}%` : 'Diagnostic Standby'}
             </div>
           </div>
         </div>
@@ -138,10 +138,13 @@ export const StructuralCortex = () => {
               <div className="p-6 border border-zinc-900 bg-zinc-900/20 flex flex-col justify-between h-full">
                  <div className="space-y-4">
                    <div className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest">Logic Continuity Score</div>
-                   <div className="text-4xl font-bold text-bone font-mono">31<span className="text-sm ml-1 text-zinc-700">%</span></div>
+                   <div className="text-4xl font-bold text-bone font-mono">{project.structural?.logicConsistency || 0}<span className="text-sm ml-1 text-zinc-700">%</span></div>
                    <p className="text-[9px] text-zinc-500 uppercase leading-relaxed tracking-wider">
-                     Twist contains <span className="text-crimson font-bold">CRITICAL DECOUPLING</span>. 
-                     The current projection breaks 3 core promises in the Continuity Architecture.
+                     {project.structural?.logicConsistency && project.structural.logicConsistency < 40 ? (
+                       <>Twist contains <span className="text-crimson font-bold">CRITICAL DECOUPLING</span>. The current projection breaks core promises.</>
+                     ) : (
+                       <>Structural integrity verified. No critical decoupling detected in active simulation.</>
+                     )}
                    </p>
                  </div>
                  <button className="w-full py-2 bg-crimson shadow-[0_0_15px_rgba(153,0,0,0.3)] text-bone text-[9px] uppercase font-bold tracking-widest hover:bg-crimson/80 mt-6" disabled={!hasWound}>
@@ -160,11 +163,7 @@ export const StructuralCortex = () => {
               <h3 className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Structural Propositions</h3>
             </div>
             <div className="space-y-2">
-              {hasWound ? [
-                "Protagonist's Complicity revealed via institutional data.",
-                "The 'False Premise' of the Wound is inverted.",
-                "Character B's true position is signaled in peripheral description."
-              ].map((p, i) => (
+              {hasWound ? (project.structural?.propositions || []).map((p, i) => (
                 <div key={i} className="p-3 bg-zinc-900/20 border border-zinc-900 text-[10px] text-zinc-400 font-mono italic flex gap-4">
                    <span className="text-crimson font-bold">PROP_{i+1}</span>
                    {p}

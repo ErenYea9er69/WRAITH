@@ -1,15 +1,15 @@
 import { useWraithStore } from '../../store/useWraithStore';
-import type { Chapter } from '../../store/useWraithStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Beaker, Layers, Terminal, Activity, Zap, Edit3, Eye, Sparkles, ChevronLeft, Loader2 } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { api } from '../../services/api';
 
 export const ChapterLaboratory = () => {
-  const { project, activeChapterId, setActiveChapter, updateChapter, addChapter } = useWraithStore();
+  const { project, activeChapterId, setActiveChapter, updateChapter, addChapter, generateChapterSection, generateNovelDraft } = useWraithStore();
   const [viewMode, setViewMode] = useState<'analysis' | 'compose'>('analysis');
   const [activeLayer, setActiveLayer] = useState<'psych' | 'struct' | 'thematic'>('psych');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingNovel, setIsGeneratingNovel] = useState(false);
   
   const hasWound = project.wound.trim().length > 0;
   const chapters = project.chapters || [];
@@ -113,6 +113,19 @@ export const ChapterLaboratory = () => {
                        </button>
                      ))}
                   </div>
+
+                  <button 
+                    onClick={async () => {
+                      setIsGeneratingNovel(true);
+                      await generateNovelDraft();
+                      setIsGeneratingNovel(false);
+                    }}
+                    disabled={!hasWound || isGeneratingNovel}
+                    className="px-4 py-2 bg-crimson/10 border border-crimson/20 text-crimson text-[9px] uppercase font-bold tracking-widest hover:bg-crimson/20 transition-all flex items-center gap-2 disabled:opacity-20"
+                  >
+                    {isGeneratingNovel ? <Loader2 size={10} className="animate-spin" /> : <Layers size={10} />}
+                    ORCHESTRATE_FULL_DRAFT
+                  </button>
                </div>
 
                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 overflow-y-auto pr-2">
@@ -214,13 +227,31 @@ export const ChapterLaboratory = () => {
                          <span className="text-[10px] text-zinc-500 font-mono">{(activeChapter?.content || '').length % 100}%</span>
                       </div>
                    </div>
-                   <button 
-                     onClick={handleGenerate}
-                     disabled={isGenerating}
-                     className="flex items-center gap-2 text-crimson text-[9px] uppercase font-bold tracking-[0.2em] hover:text-white transition-all disabled:opacity-20"
-                   >
-                     {isGenerating ? <Loader2 size={10} className="animate-spin" /> : <Sparkles size={10} />} CONTINUATION_AI_ASSIST
-                   </button>
+                    <div className="flex gap-4">
+                      <button 
+                        onClick={async () => {
+                          setIsGenerating(true);
+                          await handleGenerate();
+                          setIsGenerating(false);
+                        }}
+                        disabled={isGenerating}
+                        className="flex items-center gap-2 text-zinc-500 text-[9px] uppercase font-bold tracking-[0.2em] hover:text-white transition-all disabled:opacity-20"
+                      >
+                        {isGenerating ? <Loader2 size={10} className="animate-spin" /> : <Sparkles size={10} />} RE-SIMULATE
+                      </button>
+                      <button 
+                        onClick={async () => {
+                          if (!activeChapterId) return;
+                          setIsGenerating(true);
+                          await generateChapterSection(activeChapterId);
+                          setIsGenerating(false);
+                        }}
+                        disabled={isGenerating}
+                        className="flex items-center gap-2 text-crimson text-[9px] uppercase font-bold tracking-[0.2em] hover:text-white transition-all disabled:opacity-20"
+                      >
+                        {isGenerating ? <Loader2 size={10} className="animate-spin" /> : <Zap size={10} />} APPEND_NEXT_SECTION
+                      </button>
+                    </div>
                 </div>
              </div>
            )}

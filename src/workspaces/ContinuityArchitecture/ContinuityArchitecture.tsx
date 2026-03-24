@@ -5,11 +5,10 @@ import { GitBranch, CheckCircle2, AlertCircle, Bookmark, Activity } from 'lucide
 export const ContinuityArchitecture = () => {
   const { project } = useWraithStore();
 
-  const promises = [
+  const promises = project.continuity?.promises || [
     { id: 'P_01', text: 'The protagonist is verified blind in the left eye.', status: 'Broken', chapter: '03' },
     { id: 'P_02', text: 'The "Wound" occured exactly 12 years ago.', status: 'Verified', chapter: '01' },
     { id: 'P_03', text: 'Institutional denial is the primary opposition.', status: 'Staged', chapter: '06' },
-    { id: 'P_04', text: 'The sink was never repaired.', status: 'Pending', chapter: '09' },
   ];
 
   return (
@@ -41,7 +40,7 @@ export const ContinuityArchitecture = () => {
               </div>
               
               <div className="space-y-3">
-                 {promises.map((p, i) => (
+                 {promises.map((p: any, i: number) => (
                    <div key={i} className="bg-zinc-900/20 border border-zinc-900 p-4 group hover:bg-zinc-900/40 transition-all">
                       <div className="flex justify-between items-start mb-2">
                          <span className="text-[9px] text-zinc-600 font-bold uppercase">{p.id}</span>
@@ -83,10 +82,14 @@ export const ContinuityArchitecture = () => {
                  
                  <div className="z-10 text-center space-y-2">
                     <div className="text-[32px] font-bold text-bone tracking-tighter uppercase leading-none">
-                       01 <span className="text-crimson italic">Loop</span>
+                       {project.continuity?.logicLoops?.length || 0} <span className="text-crimson italic">Loop{project.continuity?.logicLoops?.length !== 1 ? 's' : ''}</span>
                     </div>
                     <p className="text-[9px] text-zinc-600 uppercase font-bold tracking-widest max-w-[150px] mx-auto">
-                       Detected in CH_03 / CH_07 Correlation: <span className="text-zinc-400 italic">Temporal Offset</span>.
+                       {project.continuity?.logicLoops && project.continuity.logicLoops.length > 0 ? (
+                          <>Detected in {project.continuity.logicLoops[0].location}: <span className="text-zinc-400 italic">{project.continuity.logicLoops[0].description}</span>.</>
+                       ) : (
+                          <>System Synchronized: <span className="text-zinc-400 italic">No loops detected</span>.</>
+                       )}
                     </p>
                  </div>
                  
@@ -100,7 +103,7 @@ export const ContinuityArchitecture = () => {
                     <span className="text-[9px] text-zinc-600 uppercase font-bold">Bible Synchronization</span>
                  </div>
                  <div className="text-[10px] text-bone uppercase tracking-widest font-mono">
-                    94.2% CONSISTENCY FACTOR
+                    {project.signal?.coherence || 0}% CONSISTENCY FACTOR
                  </div>
               </div>
            </div>

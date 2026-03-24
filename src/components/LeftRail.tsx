@@ -40,7 +40,7 @@ export const LeftRail = () => {
         </div>
       </div>
 
-      <nav className="flex-1 flex flex-col gap-6">
+      <nav className="flex-1 flex flex-col gap-6 overflow-y-auto no-scrollbar py-2 px-2">
         {WORKSPACES.map((ws) => {
           const isActive = activeWorkspace === ws.id;
           const isOrigin = ws.id === 'origin';

@@ -24,5 +24,15 @@ export const api = {
     });
     if (!res.ok) return null;
     return res.json();
+  },
+
+  async analyzeProject(projectId: string, context: any) {
+    const res = await fetch(`${API_BASE}/analyze-project`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ projectId, context }),
+    });
+    if (!res.ok) return null;
+    return res.json();
   }
 };

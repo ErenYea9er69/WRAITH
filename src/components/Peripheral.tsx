@@ -1,7 +1,7 @@
 import { useWraithStore } from '../store/useWraithStore';
 
 export const Peripheral = () => {
-  const { activeWorkspace, project } = useWraithStore();
+  const { activeWorkspace, project, analyzeProject } = useWraithStore();
   const hasWound = project.wound.trim().length > 0;
 
   return (
@@ -58,6 +58,16 @@ export const Peripheral = () => {
             )}
           </div>
         </div>
+      )}
+      
+      {hasWound && (
+        <button 
+          onClick={() => analyzeProject()}
+          className="w-full py-3 bg-zinc-900 border border-zinc-800 hover:border-crimson text-bone text-[10px] uppercase tracking-widest font-bold transition-all group flex items-center justify-center gap-2"
+        >
+          <div className="w-1.5 h-1.5 rounded-full bg-crimson animate-pulse" />
+          ANALYZE STORY LOGIC
+        </button>
       )}
       
       <div className="mt-auto pt-4 border-t border-zinc-900 text-[9px] text-zinc-600 font-mono">

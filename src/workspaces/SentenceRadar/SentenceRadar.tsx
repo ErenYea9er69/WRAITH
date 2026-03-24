@@ -35,10 +35,10 @@ export const SentenceRadar = () => {
       {/* Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
         {[
-          { label: 'Logic Density', value: '42%', color: 'crimson', desc: 'Ratio of syllogism to image.' },
-          { label: 'Coordination', value: '68%', color: 'zinc-400', desc: 'Compound sentence bias.' },
-          { label: 'Subordination', value: '12%', color: 'zinc-700', desc: 'Complex dependency depth.' },
-          { label: 'Irony Variance', value: 'LOW', color: 'zinc-700', desc: 'Stability of voice register.' },
+          { label: 'Logic Density', value: `${project.structural?.logicConsistency || 0}%`, color: 'crimson', desc: 'Ratio of syllogism to image.' },
+          { label: 'Coordination', value: `${project.compass.pacingRatios.dialogue}%`, color: 'zinc-400', desc: 'Compound sentence bias.' },
+          { label: 'Subordination', value: `${project.compass.pacingRatios.interiority}%`, color: 'zinc-700', desc: 'Complex dependency depth.' },
+          { label: 'Revelation Density', value: project.structural?.revelationDensity || '0.0 bits', color: 'zinc-700', desc: 'Information release rate.' },
         ].map((m, i) => (
           <div key={i} className="bg-zinc-900/10 border border-zinc-900 p-4 rounded-sm hover:border-zinc-800 transition-colors cursor-default">
             <h4 className="text-[10px] text-zinc-600 font-bold uppercase mb-2 tracking-widest">{m.label}</h4>
@@ -120,19 +120,18 @@ export const SentenceRadar = () => {
               <h3 className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Spectral Violations</h3>
            </div>
            <div className="space-y-4">
-              {[
-                { pattern: 'Passive Evasion', count: '04', severity: 'HIGH' },
-                { pattern: 'Metaphorical Slop', count: '01', severity: 'MID' },
-                { pattern: 'Adverbial Padding', count: '12', severity: 'CRITICAL' },
-              ].map((v, i) => (
+              {(project.thematic?.contradictions || []).map((v, i) => (
                 <div key={i} className="flex justify-between items-center bg-[#0a0a0b] p-3 border border-zinc-900">
                    <div className="flex flex-col">
-                      <span className="text-[10px] text-bone uppercase tracking-tight">{v.pattern}</span>
-                      <span className="text-[8px] text-zinc-700 uppercase">{v.severity} SEVERITY</span>
+                      <span className="text-[10px] text-bone uppercase tracking-tight">{v.sideA} vs {v.sideB}</span>
+                      <span className="text-[8px] text-zinc-700 uppercase">WEIGHT: {v.weight}</span>
                    </div>
-                   <div className="text-xl font-bold text-zinc-800 font-mono">{v.count}</div>
+                   <div className="text-xl font-bold text-zinc-800 font-mono">{v.weight > 70 ? 'CRITICAL' : 'MID'}</div>
                 </div>
               ))}
+              {(!project.thematic?.contradictions || project.thematic.contradictions.length === 0) && (
+                <div className="text-[9px] text-zinc-800 uppercase text-center py-4 border border-dashed border-zinc-900">No contradictions mapped</div>
+              )}
            </div>
            <div className="mt-8">
               <div className="flex items-center gap-2 opacity-30">

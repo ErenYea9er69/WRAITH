@@ -58,17 +58,22 @@ export const PsycheEngine = () => {
               <h3 className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Behavioral Signature Set</h3>
             </div>
             <div className="space-y-2">
-              {[1, 2, 3].map(i => (
-                <div key={i} className="group p-3 bg-zinc-900/20 border border-zinc-900 hover:border-zinc-800 transition-colors flex justify-between items-center cursor-pointer">
+              {(project.psyche?.signatures || []).map((sig, i) => (
+                <div key={sig.id} className="group p-3 bg-zinc-900/20 border border-zinc-900 hover:border-zinc-800 transition-colors flex justify-between items-center cursor-pointer">
                   <div className="flex flex-col gap-1">
-                    <span className="text-[9px] text-zinc-600 font-bold uppercase transition-colors group-hover:text-zinc-500">Signature {i}</span>
-                    <span className="text-[11px] text-zinc-800 italic uppercase">Unscheduled</span>
+                    <span className="text-[9px] text-zinc-600 font-bold uppercase transition-colors group-hover:text-zinc-500">{sig.name}</span>
+                    <span className="text-[11px] text-zinc-800 italic uppercase">{sig.type}</span>
                   </div>
                   <div className="text-[10px] text-zinc-900 group-hover:text-zinc-700 transition-colors uppercase font-bold tracking-tighter">
-                    Deploy
+                    {sig.status}
                   </div>
                 </div>
               ))}
+              {(!project.psyche?.signatures || project.psyche.signatures.length === 0) && (
+                <div className="p-4 border border-dashed border-zinc-900 text-center opacity-40 text-[9px] text-zinc-600 uppercase">
+                  No signatures detected. Run analysis.
+                </div>
+              )}
             </div>
             <div className="flex gap-2 p-3 bg-zinc-900/10 rounded">
                <Info size={14} className="text-zinc-700 shrink-0" />
@@ -103,7 +108,7 @@ export const PsycheEngine = () => {
                 <p className="text-[9px] text-zinc-600 italic">Discrepancy between exterior manifestation and interior truth.</p>
               </div>
               <div className={`text-3xl font-bold font-mono transition-colors ${hasWound ? 'text-crimson' : 'text-zinc-800'}`}>
-                {hasWound ? '72' : '00'}<span className="text-xs text-zinc-700 ml-1">%</span>
+                {project.psyche?.maskLoad || '00'}<span className="text-xs text-zinc-700 ml-1">%</span>
               </div>
             </div>
 
@@ -139,22 +144,18 @@ export const PsycheEngine = () => {
           <div className={`bg-zinc-900/10 border border-zinc-900 rounded p-6 flex flex-col transition-opacity duration-1000 ${hasWound ? 'opacity-100' : 'opacity-20'}`}>
             <div className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold mb-6">Signature Log</div>
             <div className="flex-1 space-y-4 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-zinc-800">
-              {hasWound ? [
-                { time: '14:22', sig: 'Evasive Redirect', status: 'Active', color: 'crimson' },
-                { time: '12:05', sig: 'Bureaucratic Deference', status: 'Logged', color: 'zinc-700' },
-                { time: '09:40', sig: 'Somatic Suppression', status: 'Logged', color: 'zinc-700' },
-                { time: '04:15', sig: 'Mimetic Compliance', status: 'Logged', color: 'zinc-700' },
-              ].map((log, i) => (
+              {(project.psyche?.signatures || []).map((log, i) => (
                 <div key={i} className="flex gap-4 items-start text-[10px] border-b border-zinc-900 pb-3 last:border-0">
                   <span className="text-zinc-700 font-mono tracking-tighter">{log.time}</span>
                   <div className="flex-1">
                     <div className="flex justify-between">
-                      <span className="text-zinc-400 font-bold uppercase tracking-tight">{log.sig}</span>
+                      <span className="text-zinc-400 font-bold uppercase tracking-tight">{log.name}</span>
                       <span className={`text-${log.color} text-[8px] font-bold uppercase`}>{log.status}</span>
                     </div>
                   </div>
                 </div>
-              )) : (
+              ))}
+              {(!project.psyche?.signatures || project.psyche.signatures.length === 0) && (
                 <div className="h-full flex items-center justify-center text-[9px] text-zinc-800 font-mono uppercase">Log Empty</div>
               )}
             </div>

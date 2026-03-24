@@ -5,11 +5,12 @@ import { Eye, ShieldAlert, Activity, AlertTriangle } from 'lucide-react';
 export const DreadArchitecture = () => {
   const { project } = useWraithStore();
 
-  const beliefLayers = [
-    { label: 'Protagonist Identity', readerBelief: 'Stable', truth: 'Fractured', suspicion: 15 },
-    { label: 'The Murders at the Sink', readerBelief: 'Accidental', truth: 'Premeditated', suspicion: 65 },
-    { label: 'The Wound Origin', readerBelief: 'Hidden', truth: 'Projected', suspicion: 85 },
+  const beliefLayers = (project.dread as any)?.beliefStack || [
+    { label: 'Protagonist Identity', reader: 'Stable', truth: 'Fractured', suspicion: 15 },
+    { label: 'The Murders at the Sink', reader: 'Accidental', truth: 'Premeditated', suspicion: 65 },
+    { label: 'The Wound Origin', reader: 'Hidden', truth: 'Projected', suspicion: 85 },
   ];
+
 
   return (
     <div className="flex flex-col bg-[#0a0a0b] p-8 min-h-full font-mono">
@@ -33,7 +34,7 @@ export const DreadArchitecture = () => {
                  <ShieldAlert size={14} /> Reader Belief Model Stack
               </h3>
               <div className="space-y-4">
-                 {beliefLayers.map((layer, i) => (
+                 {beliefLayers.map((layer: any, i: number) => (
                    <div key={i} className="p-4 bg-zinc-900/20 border border-zinc-900 group hover:border-crimson/40 transition-all">
                       <div className="flex justify-between items-center mb-2">
                          <span className="text-[10px] text-bone uppercase tracking-tighter">{layer.label}</span>
@@ -42,7 +43,7 @@ export const DreadArchitecture = () => {
                       <div className="flex gap-4">
                          <div className="flex-1">
                             <span className="text-[8px] text-zinc-700 uppercase block mb-1">Reader Belief</span>
-                            <span className="text-[11px] text-zinc-400 font-bold uppercase tracking-widest">{layer.readerBelief}</span>
+                            <span className="text-[11px] text-zinc-400 font-bold uppercase tracking-widest">{layer.reader || layer.readerBelief}</span>
                          </div>
                          <div className="flex-1">
                             <span className="text-[8px] text-crimson/50 uppercase block mb-1">Internal Truth</span>
@@ -67,15 +68,15 @@ export const DreadArchitecture = () => {
                     <Activity size={14} /> Dread Calibration
                  </h3>
                  <div className="flex items-end gap-1 h-32 mb-4">
-                    {[20, 45, 30, 85, 60, 95, 40, 75, 50, 90].map((h, i) => (
+                    {(project.signal?.beliefGap || [20, 45, 30, 85, 60]).map((p: any, i: number) => (
                       <motion.div 
                         key={i}
                         initial={{ height: 0 }}
-                        animate={{ height: `${h}%` }}
+                        animate={{ height: `${p.y || p}%` }}
                         transition={{ duration: 1, delay: i * 0.1 }}
                         className="flex-1 bg-zinc-900 border-x border-zinc-800 relative group"
                       >
-                         <div className={`absolute bottom-0 left-0 right-0 bg-crimson/20 group-hover:bg-crimson/40 transition-all`} style={{ height: `${h}%` }} />
+                         <div className={`absolute bottom-0 left-0 right-0 bg-crimson/20 group-hover:bg-crimson/40 transition-all`} style={{ height: `${p.y || p}%` }} />
                       </motion.div>
                     ))}
                  </div>

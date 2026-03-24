@@ -23,6 +23,7 @@ export const initDB = async () => {
         collapseQuestion TEXT,
         compass TEXT,
         chapters TEXT,
+        diagnostics TEXT,
         isOriginComplete INTEGER,
         lastUpdated DATETIME DEFAULT CURRENT_TIMESTAMP
       )
@@ -31,6 +32,12 @@ export const initDB = async () => {
     // Migration: Add chapters column if it doesn't exist (for existing tables)
     try {
       await run('ALTER TABLE projects ADD COLUMN chapters TEXT');
+    } catch (e) {
+      // Column likely already exists
+    }
+
+    try {
+      await run('ALTER TABLE projects ADD COLUMN diagnostics TEXT');
     } catch (e) {
       // Column likely already exists
     }
