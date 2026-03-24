@@ -195,11 +195,37 @@ export const OriginChamber = () => {
                       <div className="grid grid-cols-2 gap-2 text-[9px] text-zinc-500">
                         <div className="space-y-1">
                           <span>Max Action</span>
-                          <input type="number" value={project.compass.sentenceBehavior.maxLengthAction} className="w-full bg-zinc-900 p-1 border border-zinc-800" />
+                          <input 
+                            type="number" 
+                            value={project.compass.sentenceBehavior.maxLengthAction} 
+                            onChange={(e) => updateProject({ 
+                              compass: { 
+                                ...project.compass, 
+                                sentenceBehavior: { 
+                                  ...project.compass.sentenceBehavior, 
+                                  maxLengthAction: parseInt(e.target.value) 
+                                } 
+                              } 
+                            })}
+                            className="w-full bg-zinc-900 p-1 border border-zinc-800" 
+                          />
                         </div>
                         <div className="space-y-1">
                           <span>Max Emotional</span>
-                          <input type="number" value={project.compass.sentenceBehavior.maxLengthEmotional} className="w-full bg-zinc-900 p-1 border border-zinc-800" />
+                          <input 
+                            type="number" 
+                            value={project.compass.sentenceBehavior.maxLengthEmotional} 
+                            onChange={(e) => updateProject({ 
+                              compass: { 
+                                ...project.compass, 
+                                sentenceBehavior: { 
+                                  ...project.compass.sentenceBehavior, 
+                                  maxLengthEmotional: parseInt(e.target.value) 
+                                } 
+                              } 
+                            })}
+                            className="w-full bg-zinc-900 p-1 border border-zinc-800" 
+                          />
                         </div>
                       </div>
                     </div>

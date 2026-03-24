@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { api } from '../services/api';
 
-export type WorkspaceId = 'origin' | 'signal' | 'psyche' | 'cortex' | 'radar' | 'thematics' | 'laboratory' | 'dread' | 'continuity' | 'archive' | 'revelation' | 'thematic' | 'structural';
+export type WorkspaceId = 'origin' | 'signal' | 'psyche' | 'cortex' | 'radar' | 'thematics' | 'laboratory' | 'dread' | 'continuity';
 
 export interface Chapter {
   id: string;

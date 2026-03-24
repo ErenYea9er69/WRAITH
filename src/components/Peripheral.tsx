@@ -21,14 +21,6 @@ export const Peripheral = () => {
                 : "Origin Chamber is mandatory. Awaiting architecture initialization..."}
             </p>
           </div>
-          {hasWound && (
-            <div className="p-3 bg-zinc-900/50 border border-zinc-800 rounded">
-              <h4 className="text-[10px] text-zinc-400 mb-2 uppercase">Heuristics</h4>
-              <p className="text-xs text-bone leading-relaxed">
-                Detecting emotional resonant markers in the Wound entry...
-              </p>
-            </div>
-          )}
         </div>
       )}
 
@@ -45,18 +37,6 @@ export const Peripheral = () => {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <h4 className="text-[10px] text-zinc-500 uppercase tracking-tighter">Active Resistance Feed</h4>
-            {hasWound ? (
-              <div className="p-2 bg-crimson/5 border border-crimson/20 rounded text-[11px] text-bone/80 italic border-l-2 border-l-crimson">
-                "The protagonist's sudden shift in Chapter 4 lacks the necessary psychological preparation."
-              </div>
-            ) : (
-              <div className="p-2 border border-zinc-900 rounded text-[10px] text-zinc-600 font-mono text-center">
-                SIGNAL IDLE // NO DATA
-              </div>
-            )}
-          </div>
         </div>
       )}
       

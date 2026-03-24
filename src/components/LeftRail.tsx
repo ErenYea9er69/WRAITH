@@ -6,15 +6,13 @@ import {
   Activity, 
   User, 
   Layers, 
-  Key, 
   Tent, 
   FlaskConical, 
   Eye, 
-  History,
   AlertCircle,
   GitBranch
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+
 
 const WORKSPACES: { id: WorkspaceId; icon: any; label: string; status?: 'amber' | 'crimson' | 'dark' | 'none' }[] = [
   { id: 'origin', icon: Target, label: 'Origin Chamber', status: 'amber' },
@@ -26,7 +24,6 @@ const WORKSPACES: { id: WorkspaceId; icon: any; label: string; status?: 'amber' 
   { id: 'laboratory', icon: FlaskConical, label: 'Chapter Lab', status: 'dark' },
   { id: 'dread', icon: Eye, label: 'Dread Architecture', status: 'dark' },
   { id: 'continuity', icon: GitBranch, label: 'Continuity System', status: 'dark' },
-  { id: 'archive', icon: History, label: 'Archive', status: 'none' },
 ];
 
 export const LeftRail = () => {
@@ -97,9 +94,6 @@ export const LeftRail = () => {
              </div>
            </div>
         )}
-        <button className="p-3 text-zinc-700 hover:text-zinc-400 transition-colors">
-          <History size={20} />
-        </button>
       </div>
     </aside>
   );
